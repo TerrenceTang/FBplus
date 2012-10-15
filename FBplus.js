@@ -5,20 +5,20 @@ function FBplus() {
         args : args[0],
         i;
     if (!(this instanceof FBplus)) {
- 　　　　 return new FBplus(modules, callback);
- 　 }
+        return new FBplus(modules, callback);
+    }
 
-  　if (!modules || modules === '*') {
-      　modules = [];
-  　  　for (i in FBplus.modules) {
-   　     　if (FBplus.modules.hasOwnProperty(i)) {
-    　　　　　modules.push(i);
-    　　　　}
-   　 　}
-  　}
+    if (!modules || modules === '*') {
+        modules = [];
+        for (i in FBplus.modules) {
+            if (FBplus.modules.hasOwnProperty(i)) {
+                modules.push(i);
+            }
+        }
+    }
 
- 　 for (i = 0; i < modules.length; i++) {
-      　FBplus.modules[modules[i]](this);
+    for (i = 0; i < modules.length; i++) {
+        FBplus.modules[modules[i]](this);
     }
 
     var isJquery = (typeof $ === "function") ? true : false;
@@ -62,7 +62,7 @@ function FBplus() {
             console.error("no ajax object, default is used JQuery");
         }
     };
-　　callback(this);
+    callback(this);
 };
 
 FBplus.prototype.QueryParamsProjection = function(params){
