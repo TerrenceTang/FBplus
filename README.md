@@ -46,7 +46,6 @@ The module of Auth is using to help developer to create login url or deal token
 ```
     new FBplus(['auth'], function(box){
         // the scope is about permession which will developer access
-        // more information to see [facebook permession](http://developers.facebook.com/docs/authentication/permissions/)
         var scope = "read_stream,publish_checkins,publish_stream,user_status,user_checks,user_birthday,friends_status";
 
         // get login link
@@ -62,6 +61,7 @@ The module of Auth is using to help developer to create login url or deal token
 
     });
 ```
+more information to see [facebook permession](http://developers.facebook.com/docs/authentication/permissions/)
 
 #Wall
 The wall is about some activity of user or friend.
@@ -70,8 +70,8 @@ The wall is about some activity of user or friend.
     new FBplus(['wall'], function(box){
         // to get the home wall which include activitys of user and friends
         box.wall.home(success_callback_function, fail_callback_function);
-        // to get the feed wall which bace on friend's id
-        box.wall.feed("fid");
+        // to get the feed wall which base on friend's id
+        box.wall.feed("fid", success_callback_function, fail_callback_function);
         // insert message into wall
         box.wall.insert({message:"content"}, success_callback_function, fail_callback_function);
     });
@@ -100,7 +100,7 @@ The module of checkin shows the checkin from user or friend
         box.checkin.getFriendCheckin("fid", success_callback_function, fail_callback_function);
 
         // show checkin from me
-        box.checkin.getMeCheckin();
+        box.checkin.getMeCheckin(success_callback_function, fail_callback_function);
 
         // make checkin
         box.checkin.insert(
@@ -113,7 +113,7 @@ The module of checkin shows the checkin from user or friend
                message:"test",
                place:"142800992448822"
             }
-        );
+        success_callback_function, fail_callback_function);
     });
 ```
 
