@@ -28,8 +28,8 @@ function FBplus() {
             _params = "";
 
         if (typeof params === "object" || typeof params === "undefined") {
-            this.QueryParamsProjection(params);
             if(type === "get") {
+                this.QueryParamsProjection(params);
                 for (var name in params) {
                 console.log(name);
                     if (typeof params[name] === "string" || typeof params[name] === "number") {
@@ -93,15 +93,22 @@ FBplus.prototype.FCALLBACK = function(res) {
     console.log(res);
 };
 
-FBplus.modules = {};
 
+FBplus.prototype.LINK = {
+    FB_SERVER  : "https://graph.facebook.com/",
+    OAUTH_LINK : "https://www.facebook.com/dialog/oauth?",
+    TOKEN_LINK : "https://graph.facebook.com/oauth/access_token?"
+};
+
+FBplus.modules = {};
+/*
 FBplus.modules.config = function(box){
     box.config = box.config || {};
     box.config.FB_SERVER  = "https://graph.facebook.com/";
     box.config.OAUTH_LINK = "https://www.facebook.com/dialog/oauth?";
     box.config.TOKEN_LINK = "https://graph.facebook.com/oauth/access_token?";
 };
-
+*/
 FBplus.modules.auth = function(box){
     box.auth = box.auth || {};
     box.auth.getToken = function(){
@@ -109,12 +116,13 @@ FBplus.modules.auth = function(box){
     };
 
     box.auth.reloadToken = function(scallback, fcallback){
-        var _link = box.config.TOKEN_LINK + "client_id=" + this.config.CLIENT_ID + "&redirect_uri=" + this.config.REDIRECT_URI + "&secret_id=" + this.config.SECRET_ID + "&code=" + this.config.CODE;
-        this.send("get", _link, scallback, fcallback);
+        var _link = box.LINK.TOKEN_LINK + "client_id=" + box.config.CLIENT_ID + "&redirect_uri=" + box.config.REDIRECT_URI + "&client_secret=" + box.config.SECRET_ID + "&code=" + box.config.CODE;
+        console.log(_link);
+        box.send("get", _link, scallback, fcallback);
     };
 
     box.auth.getLoginUrl = function(scope){
-        return box.config.OAUTH_LINK + "client_id=" + box.config.CLIENT_ID + "&redirect_uri=" + box.config.REDIRECT_URI + "&scope=" + scope;
+        return box.LINK.OAUTH_LINK + "client_id=" + box.config.CLIENT_ID + "&redirect_uri=" + box.config.REDIRECT_URI + "&scope=" + scope;
     };
 
     box.auth.getLogoutUrl = function(uri){
@@ -122,19 +130,19 @@ FBplus.modules.auth = function(box){
     };
 
     box.auth.getLongLiveToken = function(scallback, fcallback){
-        var _link = "https://graph.facebook.com/oauth/access_token?client_id=" + this.config.CLIENT_ID + "&client_secret=" + this.config.SECRET_ID + "&grant_type=fb_exchange_token&fb_exchange_token=" + this.config.TOKEN;
-        this.send("get", _link, scallback, fcallback);
+        var _link = "https://graph.facebook.com/oauth/access_token?client_id=" + box.config.CLIENT_ID + "&client_secret=" + box.config.SECRET_ID + "&grant_type=fb_exchange_token&fb_exchange_token=" + box.config.TOKEN;
+        box.send("get", _link, scallback, fcallback);
     };
 };
 
 FBplus.modules.friends = function(box){
     box.friends = box.friends || box;
     box.friends.getFriendList = function(params, scallback, fcallback){
-        var link = box.config.FB_SERVER + "me/friends/";
+        var link = box.LINK.FB_SERVER + "me/friends/";
         box.send("get", link, params);
     };
     box.friends.getFriendInfo = function(fid, params, scallback, fcallback){
-         var link = box.config.FB_SERVER + fid;
+         var link = box.LINK.FB_SERVER + fid;
         box.send("get",link, params, scallback, fcallback);
     }
 };
@@ -142,7 +150,7 @@ FBplus.modules.friends = function(box){
 FBplus.modules.checkin = function(box){
     box.checkin = box.checkin || {};
     box.checkin.getFriendCheckin = function(fid, params, scallback, fcallback){
-        var link = box.config.FB_SERVER + fid + "/checkins/";
+        var link = box.LINK.FB_SERVER + fid + "/checkins/";
         box.send("get", link, params, scallback, fcallback);
     },
     box.checkin.getMeCheckin = function(params, scallback, fcallback){
@@ -152,7 +160,7 @@ FBplus.modules.checkin = function(box){
     box.checkin.insert = function(fid, params){
        var _fid    = (typeof fid === "string") ? fid : "me",
            _params = (typeof fid === "object") ? fid : params,
-           link = box.config.FB_SERVER + _fid + "/checkins/";
+           link = box.LINK.FB_SERVER + _fid + "/checkins/";
        box.send("post", link, _params);
     };
 };
@@ -162,19 +170,19 @@ FBplus.modules.wall = function(box){
     box.wall.insert = function(fid, params){
        var _fid    = (typeof fid === "string") ? fid : "me",
            _params = (typeof fid === "object") ? fid : params,
-           link = box.config.FB_SERVER + _fid + "/feed/";
+           link = box.LINK.FB_SERVER + _fid + "/feed/";
        box.send("post", link, _params);
     };
 
     box.wall.home = function(params){
-        var link = box.config.FB_SERVER + "me/home/";
+        var link = box.LINK.FB_SERVER + "me/home/";
         box.send("get", link, params);
     };
 
     box.wall.feed = function(fid, params){
         var _fid    = (typeof fid === "string") ? fid : "me",
            _params = (typeof fid === "object") ? fid : params,
-           link = box.config.FB_SERVER + _fid + "/feed/";
+           link = box.LINK.FB_SERVER + _fid + "/feed/";
         box.send("get", link, _params);
     };
 };
