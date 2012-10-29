@@ -29,13 +29,13 @@ In first, developer needs to set you app information
 FBplus is implemented by sandbox methodology. So developer needs to choose which module does he needs.
 
 ```
-    new FBplus(['checkin', 'friends', 'config', 'auth', 'wall'], function(box){
+    new FBplus(['checkin', 'friends', 'config', 'auth', 'wall'], function(plus){
         // dosomethings
     });
 
     or
 
-    new FBplus("*", function(box){
+    new FBplus("*", function(plus){
         // dosomethings
     });
 ```
@@ -44,20 +44,20 @@ FBplus is implemented by sandbox methodology. So developer needs to choose which
 The module of Auth is using to help developer to create login url or deal token
 
 ```
-    new FBplus(['auth'], function(box){
+    new FBplus(['auth'], function(plus){
         // the scope is about permession which will developer access
         var scope = "read_stream,publish_checkins,publish_stream,user_status,user_checks,user_birthday,friends_status";
 
         // get login link
-        box.auth.getLoginUrl(scope);
+        plus.auth.getLoginUrl(scope);
 
         // get logout link
-        box.auth.getLogoutUrl()
+        plus.auth.getLogoutUrl()
 
         //get long live token, this is danger to use in client, because it needs the secret id.
         //add this feature is because the defuault timeout in facebook is 2 hours.
         //In develop step, developer needs always re-load access token, it is very annoying.
-        box.auth.getLongLiveToken(success_callback_function, fail_callback_function);
+        plus.auth.ltoken().done(success_callback_function).fail(fail_callback_function);
 
     });
 ```
@@ -67,13 +67,29 @@ more information to see [facebook permession](http://developers.facebook.com/doc
 The wall is about some activity of user or friend.
 
 ```
-    new FBplus(['wall'], function(box){
+    new FBplus(['wall'], function(plus){
         // to get the home wall which include activitys of user and friends
-        box.wall.home(success_callback_function, fail_callback_function);
+        plus.wall.home().done(success_callback_function).fail(fail_callback_function);
+
         // to get the feed wall which base on friend's id
-        box.wall.feed("fid", success_callback_function, fail_callback_function);
+        plus.wall.feed("fid").done(success_callback_function).fail(fail_callback_function);
+
+        // get comments by id
+        plus.wall.comments("id").done(success_callback_function).fail(fail_callback_function);
+
+        // get comments by id
+        plus.wall.likes("id").done(success_callback_function).fail(fail_callback_function);
+
+        // get share links by id
+        plus.wall.links("id").done(success_callback_function).fail(fail_callback_function);
+
         // insert message into wall
-        box.wall.insert({message:"content"}, success_callback_function, fail_callback_function);
+        plus.wall.insert({message:"content"}).done(success_callback_function).fail(fail_callback_function);
+        // insert conment
+        plus.wall.insertComment(id, {message:"content"}).done(success_callback_function).fail(fail_callback_function);
+        // insert like
+        plus.wall.insertLike(id).done(success_callback_function).fail(fail_callback_function);
+
     });
 ```
 
@@ -81,13 +97,14 @@ The wall is about some activity of user or friend.
 The module of friends shows friend list and information
 
 ```
-    new FBplus(['friends'], function(box){
+    new FBplus(['friends'], function(plus){
         // show all friend
-        box.friends.getFriendList(success_callback_function, fail_callback_function);
+        plus.friends.list().done(success_callback_function).fail(fail_callback_function);
+
         // show information of friend
-        box.friends.getFriendInfo("fid", success_callback_function, fail_callback_function);
+        plus.friends.nfo("fid").done(success_callback_function).fail(fail_callback_function);
         or
-        box.friends.getFriendInfo("me", success_callback_function, fail_callback_function);
+        plus.friends.info("me").done(success_callback_function).fail(fail_callback_function);
     });
 ```
 
@@ -95,15 +112,15 @@ The module of friends shows friend list and information
 The module of checkin shows the checkin from user or friend
 
 ```
-    new FBplus(['checkin'], function(box){
+    new FBplus(['checkin'], function(plus){
         // show checkin from friend
-        box.checkin.getFriendCheckin("fid", success_callback_function, fail_callback_function);
+        plus.checkin.friend("fid").done(success_callback_function).fail(fail_callback_function);
 
         // show checkin from me
-        box.checkin.getMeCheckin(success_callback_function, fail_callback_function);
+        plus.checkin.me().done(success_callback_function).fail(fail_callback_function);
 
         // make checkin
-        box.checkin.insert(
+        plus.checkin.insert(
             {
                coordinates:
                {
@@ -128,12 +145,12 @@ When querying data, there are several useful parameters that enable you to filte
 [more information](https://developers.facebook.com/docs/reference/api/pagination/)
 
 ```
-   new FBplus(['checkin'], function(box){
+   new FBplus(['checkin'], function(plus){
        // get 3 numbers data
-       box.checkin.getMeCheckin({limit:3});
+       plus.checkin.me({limit:3});
        // get checkin which create until yesterday
-       box.checkin,getMeChekin({until:"yesterday"});
+       plus.checkin,me({until:"yesterday"});
        // get checkin which was created  since yesterday
-       box.checkin,getMeChekin({since:"yesterday"});
+       plus.checkin,me({since:"yesterday"});
     });
 ```
