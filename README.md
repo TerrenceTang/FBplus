@@ -74,6 +74,9 @@ The wall is about some activity of user or friend.
         // to get the feed wall which base on friend's id
         plus.wall.feed("fid").done(success_callback_function).fail(fail_callback_function);
 
+        // to get freined's shares
+        plus.wall.shares("start_time", "limit").done(success_callback_function).fail(fail_callback_function);
+
         // get comments by id
         plus.wall.comments("id").done(success_callback_function).fail(fail_callback_function);
 

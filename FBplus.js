@@ -15,7 +15,6 @@ function FBplus() {
             }
         }
     }
-        FBplus.modules.auth(this);
     for (i = 0; i < modules.length; i++) {
         FBplus.modules[modules[i]](this);
     }
@@ -191,6 +190,18 @@ FBplus.modules.wall = function(plus){
 
     plus.wall.links = function(fid) {
         var _link = plus.LINK.FB_SERVER + fid + "/links/";
+        return plus.FN.get(plus, _link);
+    };
+
+    plus.wall.shares = function(ctime, limit) {
+        var  _default_time  = new Date().getTime().toString().substr(0,10) - (86400),
+             _default_limit = 100,
+             _ctime = (typeof ctime != "undefined" && typeof ctime != "number") ? ctime : _default_time,
+             _limit = limit || (ctime && typeof ctime == "number") ? ((ctime.length > 10) ? ctime.substr(0,10) : ctime)  : _default_limit,
+             _fql  = "SELECT post_id, actor_id, target_id, message, comments, permalink, likes, attachment  FROM stream"
+                   + " WHERE created_time > " + _ctime + " and type = 80 and filter_key "
+                   + " in (SELECT filter_key FROM stream_filter WHERE uid=me() AND type='newsfeed') AND is_hidden = 0 limit " + _limit,
+            _link = plus.LINK.FB_SERVER + "fql?q=" + _fql;
         return plus.FN.get(plus, _link);
     };
 
