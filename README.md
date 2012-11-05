@@ -137,6 +137,24 @@ The module of checkin shows the checkin from user or friend
     });
 ```
 
+#Groups
+The module of groups shows the groups from user's id
+```
+    new FBplus(['groups'], function(plus){
+        // show all groups by user's id
+        plus.group.list("fid").done(success_callback_function).fail(fail_callback_function);
+
+        // query informantion of group by groupd id
+        plus.groups.info(gid).done(success_callback_function).fail(fail_callback_function);
+
+        // query the members of group
+        plus.groups.members(gid).done(success_callback_function).fail(fail_callback_function);
+
+        // query the feed  by group's id
+        plus.groups.feed(gid).done(success_callback_function).fail(fail_callback_function);
+    });
+```
+
 #Query Parameter
 When querying data, there are several useful parameters that enable you to filter and page through connection data:
 

@@ -93,7 +93,7 @@ FBplus.modules.auth = function(plus){
     };
 
     plus.auth.getLoginUrl = function(scope){
-        return plus.LINK.OAUTH_LINK + "client_id=" + plus.config.CLIENT_ID + "&redirect_uri=" + plus.config.REDIRECT_URI + "&scope=" + scope;
+        return plus.LINK.OAUTH_LINK + "client_id=" + plus.config.CLIENT_ID + "&redirect_uri=" + plus.config.REDIRECT_URI + "&scope=" + scope + "&response_type=token";
     };
 
     plus.auth.getLogoutUrl = function(uri){
@@ -125,6 +125,38 @@ FBplus.modules.friends = function(plus){
         return plus.FN.get(plus,_link);
     };
 };
+
+FBplus.modules.groups = function(plus){
+    plus.groups = {};
+    plus.groups.list = function(fid){
+        var _fid  = (typeof fid !== "undefined" && typeof fid === "string") ? fid : "me",
+        _link = plus.LINK.FB_SERVER + _fid + "/groups";
+        return plus.FN.get(plus,_link);
+    };
+
+    plus.groups.info = function(gid){
+        var _link = plus.LINK.FB_SERVER + gid;
+        return plus.FN.get(plus,_link);
+    };
+
+    plus.groups.members = function(gid){
+        var _link = plus.LINK.FB_SERVER + gid + "/members";
+        console.log(_link);
+        return plus.FN.get(plus,_link);
+    };
+
+    plus.groups.docs = function(gid){
+        var _link = plus.LINK.FB_SERVER + gid + "/docs";
+        return plus.FN.get(plus,_link);
+    };
+
+   plus.groups.feed = function(gid){
+        var _link = plus.LINK.FB_SERVER + gid + "/feed";
+        return plus.FN.get(plus,_link);
+    };
+
+};
+
 
 FBplus.modules.checkin = function(plus){
     plus.checkin = plus.checkin || {};
