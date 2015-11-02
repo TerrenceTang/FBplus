@@ -5,7 +5,7 @@ FBplus is a light javascript library for handling facebook data.<br>
 FBplus is used url to insert or query data, so developer doesn't need to load heavy library.<br>
 FBplus is build on jquery, so user needs to load jquery library before using FBplus
 
-#Setting
+#Setting.
 In first, developer needs to set you app information
 
 ```
